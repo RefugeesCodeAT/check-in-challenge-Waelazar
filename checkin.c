@@ -85,8 +85,12 @@ bool perform(string user_input)
 void add_one(string participant_name)
 {
     printf("add %s\n", participant_name);
+    PARTICIPANT *new_participant = malloc(sizeof(PARTICIPANT));
 
-    // TODO
+    new_participant->name = participant_name;
+    new_participant->checked_in = false;
+    new_participant->next = participants;
+    participants = new_participant;
 }
 
 /*
@@ -95,8 +99,19 @@ void add_one(string participant_name)
 void remove_one(string participant_name)
 {
     printf("remove %s\n", participant_name);
+    PARTICIPANT *current_participant = participants;
+    PARTICIPANT *previous_participant = current_participant;
 
-    // TODO
+    while(current_participant != NULL)
+    {
+        if (strcmp(current_participant->name , participant_name) == 0)
+        {
+            previous_participant-next = current_participant->next;
+            free(current_participant);
+        }
+        previous_participant = current_participant;
+        current_participant = current_participant->next;
+    }
 }
 
 /*
@@ -126,5 +141,7 @@ void free_memory()
 {
     printf("freeing stuff.\n");
 
-    // TODO
+    // free(PARTICIPANT->name);
+    // free(PARTICIPANT->checked_in);
+    // free(PARTICIPANT);
 }
