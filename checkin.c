@@ -106,8 +106,9 @@ void remove_one(string participant_name)
     {
         if (strcmp(current_participant->name , participant_name) == 0)
         {
-            previous_participant-next = current_participant->next;
+            previous_participant->next = current_participant->next;
             free(current_participant);
+            break;
         }
         previous_participant = current_participant;
         current_participant = current_participant->next;
@@ -120,18 +121,39 @@ void remove_one(string participant_name)
 void check_one(string participant_name)
 {
     printf("check %s\n", participant_name);
+    PARTICIPANT *current_participant = participants;
 
-    // TODO
+    while(current_participant != NULL)
+    {
+        if (strcmp(current_participant->name , participant_name) == 0)
+        {
+            if(current_participant->checked_in == CHECKED_OUT)
+            {
+                current_participant->checked_in = CHECKED_IN;
+            }
+            else
+            {
+                current_participant->checked_in = CHECKED_OUT;
+            }
+        }
+        current_participant = current_participant->next;
+    }
 }
 
 /*
     Display all participants and their status.
 */
+
 void display_participants()
 {
     printf("display\n");
-
-    // TODO
+    PARTICIPANT *current_participant = participants;
+    while(current_participant != NULL)
+    {
+        printf("name: %s\n", current_participant->name);
+        printf("status: %i\n", current_participant->checked_in);
+        current_participant = current_participant->next;
+    }
 }
 
 /*
@@ -140,8 +162,5 @@ void display_participants()
 void free_memory()
 {
     printf("freeing stuff.\n");
-
-    // free(PARTICIPANT->name);
-    // free(PARTICIPANT->checked_in);
-    // free(PARTICIPANT);
+    free(participants);
 }
